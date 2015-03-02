@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CircularImageView">
+        <attr name="border" format="boolean"></attr>
+        <attr name="border_width" format="integer"></attr>
+        <attr name="border_color" format="color"></attr>
+        <attr name="shadow" format="boolean"></attr>
+    </declare-styleable>
+    
+    <declare-styleable name="Theme">
+        <attr name="circularImageViewStyle" format="reference"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="ScrollLayout">
+        <attr name="labelerClass" format="string"/>
+        <attr name="labelerFormat" format="string"/>
+        <attr name="childWidth" format="dimension"/>
+        <attr name="childHeight" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="ParallaxImageView">
+        <attr name="intensity" format="float"/>
+        <attr name="tiltSensitivity" format="float"/>
+        <attr name="forwardTiltOffset" format="float"/>
+    </declare-styleable>
+
+</resources>

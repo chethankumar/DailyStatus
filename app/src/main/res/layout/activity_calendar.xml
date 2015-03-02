@@ -1,0 +1,74 @@
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:wheel="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/white_grain"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true"
+    tools:context="status.chethan.com.dailystatus.CalendarActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/accent_material_light"
+        android:elevation="10dp"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:src="@android:drawable/ic_menu_my_calendar"
+            android:id="@+id/calendar_view_icon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:elevation="@dimen/cardview_default_elevation"
+            android:textSize="25sp"
+            android:id="@+id/calendar_date_text"
+            android:textColor="@color/abc_primary_text_material_dark" />
+
+    </LinearLayout>
+
+    <com.squareup.timessquare.CalendarPickerView
+        android:id="@+id/calendar_view"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_width="match_parent"
+        android:layout_height="305dp"
+        />
+    <!-- calendar height was 305dp-->
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:divider="@null"
+        android:dividerHeight="6dp"
+        android:layout_weight="1"
+        android:windowSoftInputMode="adjustResize"
+        android:id="@+id/status_listview"/>
+</LinearLayout>
+    <com.pnikosis.materialishprogress.ProgressWheel
+        android:id="@+id/calendar_progress_wheel"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        wheel:barColor="#5588FF"
+        wheel:progressIndeterminate="true" />
+</RelativeLayout>
