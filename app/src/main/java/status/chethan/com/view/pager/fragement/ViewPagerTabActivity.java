@@ -29,6 +29,8 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCal
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.github.ksoichiro.android.observablescrollview.Scrollable;
+
+import status.chethan.com.dailystatus.TodayStatusActivity;
 import status.chethan.com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
@@ -259,29 +261,29 @@ public class ViewPagerTabActivity extends BaseActivity implements ObservableScro
             final int pattern = position % 3;
             switch (pattern) {
                 case 0: {
-                    f = new ViewPagerTabListViewFragment();
+                    f = new TodayViewFragment();
                     if (0 <= mScrollY) {
                         Bundle args = new Bundle();
-                        args.putInt(ViewPagerTabScrollViewFragment.ARG_SCROLL_Y, mScrollY);
+                        args.putInt(TodayViewFragment.ARG_INITIAL_POSITION, 1);
                         f.setArguments(args);
                     }
                     break;
                 }
                 case 1: {
-                    f = new TestCalenderFragment();
+                    f = new CalendarViewFragment();
                     if (0 < mScrollY) {
                         Bundle args = new Bundle();
-                        args.putInt(ViewPagerTabListViewFragment.ARG_INITIAL_POSITION, 1);
+                        args.putInt(CalendarViewFragment.ARG_INITIAL_POSITION, 1);
                         f.setArguments(args);
                     }
                     break;
                 }
                 case 2:
                 default: {
-                    f = new ViewPagerTabRecyclerViewFragment();
+                    f = new MembersViewFragment();
                     if (0 < mScrollY) {
                         Bundle args = new Bundle();
-                        args.putInt(ViewPagerTabRecyclerViewFragment.ARG_INITIAL_POSITION, 1);
+                        args.putInt(MembersViewFragment.ARG_SCROLL_Y, mScrollY);
                         f.setArguments(args);
                     }
                     break;

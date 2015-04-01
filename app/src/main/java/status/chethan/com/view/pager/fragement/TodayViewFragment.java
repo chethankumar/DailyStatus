@@ -39,25 +39,25 @@ import status.chethan.com.dailystatus.R;
 import status.chethan.objects.PersonStatus;
 import status.chethan.objects.Status;
 
-public class ViewPagerTabListViewFragment extends BaseFragment {
+public class TodayViewFragment extends BaseFragment {
 
     public static final String ARG_INITIAL_POSITION = "ARG_INITIAL_POSITION";
     private FloatingActionButton sendButton;
     private EditText messageText;
     private ArrayList mMessages;
-    private customListViewAdapter cAdapter;
+   // private customListViewAdapter cAdapter;
     public static final String ARG_SCROLL_Y = "ARG_SCROLL_Y";
     ArrayList<Status> status;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.test_delete, container, false);
+        View view = inflater.inflate(R.layout.today_layout, container, false);
 
         Activity parentActivity = getActivity();
         sendButton = (FloatingActionButton)view.findViewById(R.id.calendar_button1);
         messageText = (EditText)view.findViewById(R.id.test_statusText);
         mMessages = new ArrayList<Message>();
-        cAdapter = new customListViewAdapter(parentActivity, mMessages);
+        //cAdapter = new customListViewAdapter(parentActivity, mMessages);
         final ObservableScrollView scrollView = (ObservableScrollView) view.findViewById(R.id.scroll);
         final ObservableListView statusList = (ObservableListView) view.findViewById(R.id.statusList);
        // setDummyDataWithHeader(statusList, inflater.inflate(R.layout.padding, null));

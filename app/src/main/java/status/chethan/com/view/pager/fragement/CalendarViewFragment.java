@@ -40,7 +40,7 @@ import timber.log.Timber;
 /**
  * Created by Rahul on 3/17/2015.
  */
-public class TestCalenderFragment extends  BaseFragment  {
+public class CalendarViewFragment extends  BaseFragment  {
 
     ArrayList<PersonStatus> statusList;
 
@@ -51,12 +51,13 @@ public class TestCalenderFragment extends  BaseFragment  {
     FloatingActionButton calendarButton;
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
 
-    private static final String TAG = TestCalenderFragment.class.getSimpleName();
+    public static final String ARG_INITIAL_POSITION = "ARG_INITIAL_POSITION";
+    private static final String TAG = CalendarViewFragment.class.getSimpleName();
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.calendar_fragment, container, false);
+        View view = inflater.inflate(R.layout.calendar_layout, container, false);
         final Activity parentActivity = getActivity();
         calendarDateHeader = (TextView)view.findViewById(R.id.calendar_date_text);
         statusListView = (ListView)view.findViewById(R.id.status_listview);
@@ -71,7 +72,7 @@ public class TestCalenderFragment extends  BaseFragment  {
                 org.joda.time.DateTime now = org.joda.time.DateTime.now();
                 Log.v(TAG, "............................: " + now.getDayOfMonth() + " " + (now.getMonthOfYear()-1) + " " + now.getYear());
                 CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog
-                        .newInstance(TestCalenderFragment.this, now.getYear(), now.getMonthOfYear() - 1,
+                        .newInstance(CalendarViewFragment.this, now.getYear(), now.getMonthOfYear() - 1,
                                 now.getDayOfMonth());
                 calendarDatePickerDialog.setStyle(DialogFragment.STYLE_NO_TITLE
                         , android.R.style.Theme_Holo_Light_Dialog
