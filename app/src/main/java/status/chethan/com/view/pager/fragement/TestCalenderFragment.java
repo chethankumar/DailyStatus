@@ -1,20 +1,24 @@
-package status.chethan.com.dailystatus;
+package status.chethan.com.view.pager.fragement;
 
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.pnikosis.materialishprogress.ProgressWheel;
-import com.squareup.timessquare.CalendarPickerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,43 +27,67 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import hirondelle.date4j.DateTime;
 import hugo.weaving.DebugLog;
 import icepick.Icepick;
 import me.alexrs.prefs.lib.Prefs;
 import status.chethan.Utils;
+import status.chethan.com.dailystatus.R;
 import status.chethan.objects.Constants;
 import status.chethan.objects.PersonStatus;
 import timber.log.Timber;
 
-
-
-
-public class CalendarActivity extends Activity {
+/**
+ * Created by Rahul on 3/17/2015.
+ */
+public class TestCalenderFragment extends  BaseFragment  {
 
     ArrayList<PersonStatus> statusList;
 
-    @InjectView(R.id.calendar_date_text) TextView calendarDateHeader;
-    @InjectView(R.id.status_listview) ListView statusListView;
-    @InjectView(R.id.calendar_button1) FloatingActionButton calendarButton;
-    @InjectView(R.id.calendar_view)CalendarPickerView calendarPickerView;
-    @InjectView(R.id.calendar_progress_wheel) ProgressWheel loading;
+    TextView calendarDateHeader;
+    ListView statusListView;
+   // CalendarPickerView calendarPickerView;
+    ProgressWheel loading;
+    FloatingActionButton calendarButton;
+    private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
+
+    private static final String TAG = TestCalenderFragment.class.getSimpleName();
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.calendar_fragment, container, false);
+        final Activity parentActivity = getActivity();
+        calendarDateHeader = (TextView)view.findViewById(R.id.calendar_date_text);
+        statusListView = (ListView)view.findViewById(R.id.status_listview);
+       // calendarPickerView = (CalendarPickerView)view.findViewById(R.id.calendar_view);
+        loading = (ProgressWheel)view.findViewById(R.id.calendar_progress_wheel);
+        calendarButton = (FloatingActionButton)view.findViewById(R.id.calendar_button1);
 
-        ButterKnife.inject(this);
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getActivity().getFragmentManager();
+                org.joda.time.DateTime now = org.joda.time.DateTime.now();
+                Log.v(TAG, "............................: " + now.getDayOfMonth() + " " + (now.getMonthOfYear()-1) + " " + now.getYear());
+                CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog
+                        .newInstance(TestCalenderFragment.this, now.getYear(), now.getMonthOfYear() - 1,
+                                now.getDayOfMonth());
+                calendarDatePickerDialog.setStyle(DialogFragment.STYLE_NO_TITLE
+                        , android.R.style.Theme_Holo_Light_Dialog
+                ); //Theme_Holo_Dialog , Theme_DeviceDefault_Panel , Theme_DeviceDefault_Light_Panel
+
+                calendarDatePickerDialog.show(fm, FRAG_TAG_DATE_PICKER);
+            }
+        });
+       // ButterKnife.inject(parentActivity);
         Icepick.restoreInstanceState(this, savedInstanceState);
         Timber.plant(new Timber.DebugTree());
 
         statusList = new ArrayList<PersonStatus>();
         //statusListView = (ListView)findViewById(R.id.status_listview);
 
-      statusListView.setAdapter(new BaseAdapter() {
+        statusListView.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
                 return statusList.size();
@@ -79,16 +107,16 @@ public class CalendarActivity extends Activity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 ViewHolder viewHolder;
 
-                if (convertView == null){
+                if (convertView == null) {
                     viewHolder = new ViewHolder();
-                    convertView = getLayoutInflater().inflate(R.layout.status_card,parent,false);
-                    viewHolder.personName = (TextView)convertView.findViewById(R.id.status_card_name);
-                    viewHolder.personStatus = (TextView)convertView.findViewById(R.id.status_card_text);
+                    convertView = getActivity().getLayoutInflater().inflate(R.layout.status_card, parent, false);
+                    viewHolder.personName = (TextView) convertView.findViewById(R.id.status_card_name);
+                    viewHolder.personStatus = (TextView) convertView.findViewById(R.id.status_card_text);
 
-                    viewHolder.personName.setTypeface(Utils.getRegularTypeface(getApplicationContext()));
-                    viewHolder.personStatus.setTypeface(Utils.getRegularTypeface(getApplicationContext()));
+                    viewHolder.personName.setTypeface(Utils.getRegularTypeface(getActivity().getApplicationContext()));
+                    viewHolder.personStatus.setTypeface(Utils.getRegularTypeface(getActivity().getApplicationContext()));
                     convertView.setTag(viewHolder);
-                }else {
+                } else {
                     viewHolder = (ViewHolder) convertView.getTag();
                 }
 
@@ -99,77 +127,34 @@ public class CalendarActivity extends Activity {
             }
         });
 
-        Calendar nextYear = Calendar.getInstance();
-        nextYear.add(Calendar.DAY_OF_MONTH, 1);
+//        Calendar nextYear = Calendar.getInstance();
+//        nextYear.add(Calendar.DAY_OF_MONTH, 1);
+//
+//        Calendar previousYear = Calendar.getInstance();
+//        previousYear.add(Calendar.YEAR, -1);
 
-        Calendar previousYear = Calendar.getInstance();
-        previousYear.add(Calendar.YEAR, -1);
 //        calendarPickerView = (CalendarPickerView)findViewById(R.id.calendar_view);
-        calendarDateHeader.setTypeface(Utils.getLightTypeface(getApplicationContext()));
-        calendarPickerView.init( previousYear.getTime(),nextYear.getTime()).withSelectedDate(new Date());
-//        calendarButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Calendar Year = Calendar.getInstance();
-//                Year.add(Calendar.YEAR, -1);
-//                Calendar Month = Calendar.getInstance();
-//                Month.add(Calendar.DAY_OF_MONTH, 1);
-//                Calendar Day = Calendar.getInstance();
-//                Day.add(Calendar.DAY_OF_MONTH, 1);
-//                CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog
-//                        .newInstance(CalendarActivity.this, Year, Month,
-//                                now.getDayOfMonth());
-//            }
-//        });
-        calendarPickerView.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Date date) {
-                DateTime dateTime = DateTime.forInstant(date.getTime(), TimeZone.getDefault());
-//                Toast.makeText(CalendarActivity.this,"Date selected : "+dateTime.getDay()+" "+dateTime.getMonth()+" "+dateTime.getYear(),Toast.LENGTH_SHORT).show();
-                populateData(date);
-
-                calendarPickerView.setVisibility(View.GONE);
-
-                DateTime dateSelected = DateTime.forInstant(date.getTime(), TimeZone.getDefault());
-                calendarDateHeader.setText(dateSelected.format(Constants.DATE_HEADER_FORMAT,Locale.ENGLISH));
-                loading.setVisibility(View.VISIBLE);
-                loading.spin();
-            }
-
-            @Override
-            public void onDateUnselected(Date date) {
-
-            }
-        });
+        calendarDateHeader.setTypeface(Utils.getLightTypeface(getActivity().getApplicationContext()));
 
         DateTime today = DateTime.forInstant(new Date().getTime(), TimeZone.getDefault());
-        calendarDateHeader.setText( today.format(Constants.DATE_HEADER_FORMAT, Locale.ENGLISH));
-
-        populateData(new Date());
-
-        calendarDateHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(calendarPickerView.getVisibility() == View.VISIBLE)
-                    calendarPickerView.setVisibility(View.GONE);
-                else {
-                    calendarPickerView.setVisibility(View.VISIBLE);
-
-                }
-            }
-        });
+        calendarDateHeader.setText(today.format(Constants.DATE_HEADER_FORMAT, Locale.ENGLISH));
+        org.joda.time.DateTime todayDate= org.joda.time.DateTime.now();
+        String defaultDate =  String.format("%02d",todayDate.getDayOfMonth()) + " " + String.format("%02d",todayDate.getMonthOfYear()) + " " + todayDate.getYear();
+        populateData(defaultDate);
+        return view;
     }
 
+
+
+
     @DebugLog
-    private void populateData(Date date){
+    private void populateData(String date){
         statusList.clear();
 
         ParseQuery<ParseObject> getStatus = ParseQuery.getQuery(
-                Prefs.with(getApplicationContext()).getString(Constants.TEAM_NAME,null)
+                Prefs.with(getActivity().getApplicationContext()).getString(Constants.TEAM_NAME, null)
         );
-
-        getStatus.whereEqualTo(Constants.DATE_COLUMN,DateTime.forInstant(date.getTime(),TimeZone.getDefault()).format(Constants.DATE_FORMAT));
-        //getStatus.whereEqualTo(Constants.DATE_COLUMN, "28 03 2015");
+        getStatus.whereEqualTo(Constants.DATE_COLUMN,date);
         getStatus.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
@@ -214,10 +199,29 @@ public class CalendarActivity extends Activity {
 
     }
 
+    @Override
+    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+
+        String selectedDate =  String.format("%02d",dayOfMonth) + " " + String.format("%02d",monthOfYear+1) + " " + year;
+        Log.v(TAG, "############:" +selectedDate);
+        populateData(selectedDate);
+    }
+
+    @Override
+    public void onResume() {
+        // Example of reattaching to the fragment
+        super.onResume();
+        CalendarDatePickerDialog calendarDatePickerDialog = (CalendarDatePickerDialog)getActivity().getFragmentManager()
+                .findFragmentByTag(FRAG_TAG_DATE_PICKER);
+        if (calendarDatePickerDialog != null) {
+            calendarDatePickerDialog.setOnDateSetListener(this);
+        }
+    }
+
     @DebugLog
     private String resolveEmailToUserName(final String email){
         //First query the local cache of username to name, if not found, then get it from Parse and update the cache
-        String name = Prefs.with(getApplicationContext()).getString(email,null);
+        String name = Prefs.with(getActivity().getApplicationContext()).getString(email,null);
         if(name != null){
             return name;
         }else {
@@ -227,7 +231,7 @@ public class CalendarActivity extends Activity {
                 List<ParseObject> poList = query.find();
                 for (ParseObject parseObject : poList) {
                     if (parseObject.getString(Constants.EMAIL_COLUMN).equalsIgnoreCase(email)) {
-                        Prefs.with(getApplicationContext()).save(email,parseObject.getString(Constants.NAME_COLUMN));
+                        Prefs.with(getActivity().getApplicationContext()).save(email,parseObject.getString(Constants.NAME_COLUMN));
                         return parseObject.getString(Constants.NAME_COLUMN);
                     }
                 }

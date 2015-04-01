@@ -12,8 +12,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name" >
+            android:name=".TestLoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.Toolbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,6 +33,12 @@
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
+        <activity
+            android:name=".TodayStatusActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity android:name="status.chethan.com.view.pager.fragement.ViewPagerTabActivity"
+            android:label="ViewPagerActivity"></activity>
     </application>
 
 </manifest>

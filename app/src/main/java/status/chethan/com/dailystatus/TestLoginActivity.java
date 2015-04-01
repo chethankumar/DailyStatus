@@ -29,11 +29,12 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import icepick.Icepick;
 import icepick.Icicle;
 import me.alexrs.prefs.lib.Prefs;
+import status.chethan.com.view.pager.fragement.ViewPagerTabActivity;
 import status.chethan.objects.Constants;
 import timber.log.Timber;
 
 
-public class LoginActivity extends Activity {
+public class TestLoginActivity extends Activity {
 
     @InjectView(R.id.loginBtn)Button loginBtn;
     @InjectView(R.id.signupBtn)Button signUpBtn;
@@ -74,17 +75,17 @@ public class LoginActivity extends Activity {
                             Prefs.with(getApplicationContext()).save(Constants.USER_EMAIL_ID,ParseUser.getCurrentUser().getEmail());
                             Prefs.with(getApplicationContext()).save(Constants.TEAM_NAME,ParseUser.getCurrentUser().getString(Constants.TEAM_NAME));
 
-                            alertDialog = new SweetAlertDialog(LoginActivity.this,SweetAlertDialog.SUCCESS_TYPE);
+                            alertDialog = new SweetAlertDialog(TestLoginActivity.this,SweetAlertDialog.SUCCESS_TYPE);
                             alertDialog.setTitleText("Success").setContentText("Successfully signed up").show();
 
                             //Signup successful. Show main screen. Close the login activity
-                            LoginActivity.this.finish();
-                            Intent calIntent = new Intent(LoginActivity.this,TodayStatusActivity.class);
+                           TestLoginActivity.this.finish();
+                            Intent calIntent = new Intent(TestLoginActivity.this,TodayStatusActivity.class);
                             startActivity(calIntent);
                         } else {
                             Timber.d("error" + e.getMessage()+e.getCode());
-                            alertDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE);
-                                    alertDialog.setTitleText("Oops...")
+                            alertDialog = new SweetAlertDialog(TestLoginActivity.this, SweetAlertDialog.ERROR_TYPE);
+                            alertDialog.setTitleText("Oops...")
                                     .setContentText("Try again").show();
 
                         }
@@ -97,7 +98,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //show progress spinner while logging in and cancel, once login returns
-                final SweetAlertDialog pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                final SweetAlertDialog pDialog = new SweetAlertDialog(TestLoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                 pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                 pDialog.setTitleText("Logging in ..");
                 pDialog.setCancelable(false);
@@ -113,24 +114,24 @@ public class LoginActivity extends Activity {
                             Prefs.with(getApplicationContext()).save(Constants.USER_EMAIL_ID,ParseUser.getCurrentUser().getEmail());
                             Prefs.with(getApplicationContext()).save(Constants.TEAM_NAME,ParseUser.getCurrentUser().getString(Constants.TEAM_NAME));
 
-                            alertDialog = new SweetAlertDialog(LoginActivity.this,SweetAlertDialog.SUCCESS_TYPE);
+                            alertDialog = new SweetAlertDialog(TestLoginActivity.this,SweetAlertDialog.SUCCESS_TYPE);
                             alertDialog.setTitleText("Success").setContentText("Successfully logged in").show();
 
                             //Login successful. Show main screen. Close the login activity
-                            LoginActivity.this.finish();
-                            Intent calIntent = new Intent(LoginActivity.this,TodayStatusActivity.class);
+                            TestLoginActivity.this.finish();
+                            Intent calIntent = new Intent(TestLoginActivity.this,ViewPagerTabActivity.class);
                             startActivity(calIntent);
 
                         } else {
                             Timber.d("could not log in "+e.getMessage()+e.getCode());
 
                             if (e.getCode() == 101){//Invalid Login credentials
-                                alertDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                alertDialog = new SweetAlertDialog(TestLoginActivity.this, SweetAlertDialog.ERROR_TYPE)
                                         .setTitleText("Oops...")
                                         .setContentText("Invalid Login credentials. Try again");
                                 alertDialog.show();
                             }else {//Either there is no Internet connection or something else is wrong.
-                                alertDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                alertDialog = new SweetAlertDialog(TestLoginActivity.this, SweetAlertDialog.ERROR_TYPE)
                                         .setTitleText("Oops...")
                                         .setContentText("Something went wrong! Check your internet connection and try again");
                                 alertDialog.show();
@@ -150,8 +151,8 @@ public class LoginActivity extends Activity {
     private void initializeLoginData(){
         if(ParseUser.getCurrentUser() != null){
             //already user logged in. Take to main screen
-            LoginActivity.this.finish();
-            Intent calIntent = new Intent(LoginActivity.this,TodayStatusActivity.class);
+            TestLoginActivity.this.finish();
+            Intent calIntent = new Intent(TestLoginActivity.this,ViewPagerTabActivity.class);
 //            calIntent.putExtra(Constants.USER_EMAIL_ID,ParseUser.getCurrentUser().getEmail());
 //            calIntent.putExtra(Constants.USERNAME_COLUMN,Prefs.with(getApplicationContext()).getString(Constants.USERNAME_COLUMN,null));
 //            calIntent.putExtra(Constants.TEAM_NAME,Prefs.with(getApplicationContext()).getString(Constants.TEAM_NAME,null));

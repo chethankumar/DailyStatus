@@ -1,18 +1,25 @@
 package status.chethan.com.dailystatus;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.squareup.timessquare.CalendarPickerView;
 
@@ -21,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import butterknife.ButterKnife;
@@ -35,15 +43,12 @@ import status.chethan.objects.PersonStatus;
 import timber.log.Timber;
 
 
-
-
-public class CalendarActivity extends Activity {
+public class CalenderActivityBackup extends Activity {
 
     ArrayList<PersonStatus> statusList;
 
     @InjectView(R.id.calendar_date_text) TextView calendarDateHeader;
     @InjectView(R.id.status_listview) ListView statusListView;
-    @InjectView(R.id.calendar_button1) FloatingActionButton calendarButton;
     @InjectView(R.id.calendar_view)CalendarPickerView calendarPickerView;
     @InjectView(R.id.calendar_progress_wheel) ProgressWheel loading;
 
@@ -59,7 +64,7 @@ public class CalendarActivity extends Activity {
         statusList = new ArrayList<PersonStatus>();
         //statusListView = (ListView)findViewById(R.id.status_listview);
 
-      statusListView.setAdapter(new BaseAdapter() {
+        statusListView.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
                 return statusList.size();
@@ -104,23 +109,11 @@ public class CalendarActivity extends Activity {
 
         Calendar previousYear = Calendar.getInstance();
         previousYear.add(Calendar.YEAR, -1);
+
 //        calendarPickerView = (CalendarPickerView)findViewById(R.id.calendar_view);
         calendarDateHeader.setTypeface(Utils.getLightTypeface(getApplicationContext()));
         calendarPickerView.init( previousYear.getTime(),nextYear.getTime()).withSelectedDate(new Date());
-//        calendarButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Calendar Year = Calendar.getInstance();
-//                Year.add(Calendar.YEAR, -1);
-//                Calendar Month = Calendar.getInstance();
-//                Month.add(Calendar.DAY_OF_MONTH, 1);
-//                Calendar Day = Calendar.getInstance();
-//                Day.add(Calendar.DAY_OF_MONTH, 1);
-//                CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog
-//                        .newInstance(CalendarActivity.this, Year, Month,
-//                                now.getDayOfMonth());
-//            }
-//        });
+
         calendarPickerView.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Date date) {
@@ -169,7 +162,6 @@ public class CalendarActivity extends Activity {
         );
 
         getStatus.whereEqualTo(Constants.DATE_COLUMN,DateTime.forInstant(date.getTime(),TimeZone.getDefault()).format(Constants.DATE_FORMAT));
-        //getStatus.whereEqualTo(Constants.DATE_COLUMN, "28 03 2015");
         getStatus.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
